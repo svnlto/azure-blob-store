@@ -22,6 +22,9 @@
 var azureblobs = require('azure-blob-store');
 
 var store = azureblobs({
+  accountName: '',
+  accessKey: '',
+  container: ''
 });
 
 
@@ -45,15 +48,19 @@ store.exists({ key: 'somefile.txt' }, function(err, exists){
 
 `options` must be an object that has the following properties:
 
+`accountName` (required) Azure access key. Defaults to process.env.AZURE_STORAGE_ACCOUNT
 
-`bucket`: your bucket
+`accountKey` (required) Azure access key. Defaults to process.env.AZURE_STORAGE_ACCESS_KEY
+
+`container` (required) Azure blob store container to store files in. Defaults to process.env.AZURE_STORAGE_CONTAINER
+
 
 ### azure.createWriteStream(opts, cb)
 
 returns a writable stream that you can pipe data to.
 
 `opts` should be an object that has options `key` (will be the filename in
-your bucket)
+your container)
 
 `opts.params` additional [parameters](https://azure.microsoft.com/en-us/documentation/articles/storage-nodejs-how-to-use-blob-storage/#set-up-an-azure-storage-connection) to pass to Azure Blob storage
 
@@ -65,7 +72,7 @@ opts should be `{key: string (usually a hash or path + filename}`
 
 `opts.params` additional [parameters](https://azure.microsoft.com/en-us/documentation/articles/storage-nodejs-how-to-use-blob-storage/#set-up-an-azure-storage-connection) to pass to Azure Blob storage
 
-returns a readable stream of data for the file in your bucket whose key matches
+returns a readable stream of data for the file in your container whose key matches
 
 ## License
 
