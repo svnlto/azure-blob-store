@@ -4,9 +4,9 @@
   Azure Blob storage [abstract-blob-store](http://npmrepo.com/abstract-blob-store)
 
   [![Build Status](https://travis-ci.org/svnlto/azure-blob-store.svg)](https://travis-ci.org/svnlto/azure-blob-store)
-  
-  ![comae](https://img.shields.io/badge/Development%20sponsored%20by-Comae-green.svg?style=flat-square)
-  
+
+  ![comae](https://img.shields.io/badge/Development%20sponsored%20by-Comae%20Technologies-green.svg)
+
 
   [![blob-store-compatible](https://raw.githubusercontent.com/maxogden/abstract-blob-store/master/badge.png)](https://github.com/maxogden/abstract-blob-store)
 
@@ -50,12 +50,12 @@ store.exists({ key: 'somefile.txt' }, function(err, exists){
 
 ### azure.createWriteStream(opts, cb)
 
-returns a writable stream that you can pipe data to. 
+returns a writable stream that you can pipe data to.
 
 `opts` should be an object that has options `key` (will be the filename in
 your bucket)
 
-`opts.params` additional [parameters](https://azure.microsoft.com/en-us/documentation/articles/storage-nodejs-how-to-use-blob-storage/#set-up-an-azure-storage-connection) to pass to Azure Blob storage 
+`opts.params` additional [parameters](https://azure.microsoft.com/en-us/documentation/articles/storage-nodejs-how-to-use-blob-storage/#set-up-an-azure-storage-connection) to pass to Azure Blob storage
 
 `cb` will be called with `(err)` if there is was an error
 
