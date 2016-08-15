@@ -22,9 +22,9 @@
 var azureblobs = require('azure-blob-store');
 
 var store = azureblobs({
-  accountName: '',
-  accessKey: '',
-  container: ''
+  accountName: process.env.AZURE_STORAGE_ACCOUNT,
+  accountKey: process.env.AZURE_STORAGE_ACCESS_KEY,
+  container: process.env.AZURE_STORAGE_CONTAINER
 });
 
 
