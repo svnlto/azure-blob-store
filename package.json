@@ -1,0 +1,34 @@
+{
+  "name": "azure-blob-store",
+  "version": "1.0.0",
+  "description": "Blob store that stores blobs on the Azure Blob storage",
+  "main": "index.js",
+  "scripts": {
+    "test": "tape test.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/svnlto/azure-blob-store.git"
+  },
+  "keywords": [
+    "blob",
+    "store",
+    "azure",
+    "blob-storage"
+  ],
+  "author": "Sven Lito",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/svnlto/azure-blob-store/issues"
+  },
+  "homepage": "https://github.com/svnlto/azure-blob-store#readme",
+  "dependencies": {
+    "azure-storage": "^1.2.0",
+    "through2": "^2.0.1"
+  },
+  "devDependencies": {
+    "abstract-blob-store": "^3.2.0",
+    "babel-preset-es2015-rollup": "^1.2.0",
+    "tape": "^4.6.0"
+  }
+}
