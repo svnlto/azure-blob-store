@@ -2,7 +2,7 @@
   "name": "azure-blob-store",
   "version": "1.0.0",
   "description": "Blob store that stores blobs on the Azure Blob storage",
-  "main": "index.js",
+  "main": "./dist/index.js",
   "scripts": {
     "test": "./node_modules/.bin/babel-tape-runner test.js",
     "build": "npm run test && ./node_modules/.bin/babel -d ./dist ./index.js",
