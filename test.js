@@ -1,23 +1,23 @@
-var dotenv = require('dotenv');
+import dotenv from 'dotenv';
 dotenv.load();
 
-var blobTests = require('abstract-blob-store/tests');
-var test = require('tape');
-var BlobStore = require('./dist/azure-blob-store');
+import blobTests from 'abstract-blob-store/tests';
+import test from 'tape';
+import BlobStore from './';
 
-var store = new BlobStore({
+let store = new BlobStore({
   accountName: process.env.AZURE_STORAGE_ACCOUNT,
   accessKey: process.env.AZURE_STORAGE_ACCESS_KEY,
-  container: 'comae'
+  container: process.env.AZURE_STORAGE_CONTAINER
 });
 
-var common = {
-  setup: function(t, cb) {
-    cb(null, store);
+let common = {
+  setup: (t, done) => {
+    done(null, store);
   },
-  teardown: function(t, store, blob, cb) {
-    if (blob) store.remove(blob, cb);
-    else cb();
+  teardown: (t, store, blob, done) => {
+    if (blob) store.remove(blob, done);
+    else done();
   }
 };
 
