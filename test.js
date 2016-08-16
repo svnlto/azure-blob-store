@@ -1,5 +1,5 @@
 if (!process.env.CI) {
-  import dotenv from 'dotenv';
+  var dotenv = require('dotenv');
   dotenv.load();
 }
 
