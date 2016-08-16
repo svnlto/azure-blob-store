@@ -7,6 +7,7 @@
     "test": "./node_modules/.bin/babel-tape-runner test.js",
     "build": "npm run test && ./node_modules/.bin/babel -d ./dist ./index.js",
     "publish": "npm run build && git push && git push --tags && npm publish"
+    "eslint": "./node_modules/.bin/eslint index.js"
   },
   "repository": {
     "type": "git",
