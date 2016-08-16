@@ -4,7 +4,9 @@
   "description": "Blob store that stores blobs on the Azure Blob storage",
   "main": "index.js",
   "scripts": {
-    "test": "tape test.js"
+    "test": "./node_modules/.bin/babel-tape-runner test.js",
+    "build": "npm run test && ./node_modules/.bin/babel -d ./dist ./index.js",
+    "publish": "git push && git push --tags && npm publish"
   },
   "repository": {
     "type": "git",
@@ -28,7 +30,9 @@
   },
   "devDependencies": {
     "abstract-blob-store": "^3.2.0",
-    "babel-preset-es2015-rollup": "^1.2.0",
+    "babel-cli": "^6.11.4",
+    "babel-preset-es2015": "^6.13.2",
+    "babel-tape-runner": "^2.0.1",
     "dotenv": "^2.0.0",
     "tape": "^4.6.0"
   }
