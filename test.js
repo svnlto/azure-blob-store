@@ -1,5 +1,7 @@
-import dotenv from 'dotenv';
-dotenv.load();
+if (!process.env.CI) {
+  import dotenv from 'dotenv';
+  dotenv.load();
+}
 
 import blobTests from 'abstract-blob-store/tests';
 import test from 'tape';
