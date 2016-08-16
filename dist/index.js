@@ -29,7 +29,7 @@ var AzureBlobStore = function AzureBlobStore() {
   }
 
   var container = opts.container;
-  var blobSvc = _azureStorage2.default.createBlobService();
+  var blobSvc = _azureStorage2.default.createBlobService(opts.accountName, opts.accessKey);
 
   var createWriteStream = function createWriteStream(opts) {
     var azropts = arguments.length <= 1 || arguments[1] === undefined ? {} : arguments[1];
