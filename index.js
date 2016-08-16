@@ -14,7 +14,7 @@ const AzureBlobStore = (opts={}) => {
   }
 
   let container = opts.container;
-  let blobSvc = azure.createBlobService();
+  let blobSvc = azure.createBlobService(opts.accountName, opts.accessKey);
 
 
   const createWriteStream = (opts, azropts = {}, done) => {
