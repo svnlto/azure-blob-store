@@ -14,14 +14,14 @@
 
   Install with npm
 
-    $ npm install azure-blob-store
+    $ npm install --save azure-blob-store
 
 ## Example
 
 ```js
-var azureblobs = require('azure-blob-store');
+var AzureBlobStore = require('azure-blob-store');
 
-var store = azureblobs({
+var store = new AzureBlobStore({
   accountName: process.env.AZURE_STORAGE_ACCOUNT,
   accountKey: process.env.AZURE_STORAGE_ACCESS_KEY,
   container: process.env.AZURE_STORAGE_CONTAINER
@@ -30,49 +30,71 @@ var store = azureblobs({
 
 // write to azure
 fs.createReadStream('/tmp/somefile.txt')
-.pipe(store.createWriteStream({ key: 'somefile.txt' }))
+.pipe(store.createWriteStream({ key: 'somefile.txt' }));
 
 
 // read from azure
 store.createReadStream({ key: 'somefile.txt' })
-.pipe(fs.createWriteStream('/tmp/somefile.txt'))
+.pipe(fs.createWriteStream('/tmp/somefile.txt'));
+
+
+// remove
+store.remove({ key: 'somefile.txt' }, function(err) {
+  store.exists({ key: 'somefile.txt' }, function(err, exists) {
+    // exists - if false, blob has been removed
+  });
+});
+
 
 // exists
-store.exists({ key: 'somefile.txt' }, function(err, exists){
-})
+store.exists({ key: 'somefile.txt' }, function(err, exists) {
+  // true if blob exists
+});
+
 ```
 
 ## API
 
-### var azure = require('azure-blob-store')(options)
+```js
+var AzureBlobStore = require('azure-blob-store');
+var store = new AzureBlobStore(options);
+
+```
 
 `options` must be an object that has the following properties:
 
-`accountName` (required) Azure access key. Defaults to process.env.AZURE_STORAGE_ACCOUNT
+`accountName` (required) Azure access key. Defaults to `process.env.AZURE_STORAGE_ACCOUNT
 
-`accountKey` (required) Azure access key. Defaults to process.env.AZURE_STORAGE_ACCESS_KEY
+`accountKey` (required) Azure access key. Defaults to `process.env.AZURE_STORAGE_ACCESS_KEY`
 
-`container` (required) Azure blob store container to store files in. Defaults to process.env.AZURE_STORAGE_CONTAINER
+`container` (required) Azure blob store container to store files in. Defaults to `process.env.AZURE_STORAGE_CONTAINER`
 
+-
 
-### azure.createWriteStream(opts, cb)
+```js
+ store.createWriteStream(opts, azureopts, cb);
+```
+
 
 returns a writable stream that you can pipe data to.
 
 `opts` should be an object that has options `key` (will be the filename in
 your container)
 
-`opts.params` additional [parameters](https://azure.microsoft.com/en-us/documentation/articles/storage-nodejs-how-to-use-blob-storage/#set-up-an-azure-storage-connection) to pass to Azure Blob storage
+`azureopts` additional [parameters](http://azure.github.io/azure-storage-node/BlobService.html#createWriteStreamToNewAppendBlob) to pass to Azure Blob storage
 
 `cb` will be called with `(err)` if there is was an error
 
-### azure.createReadStream(opts)
+-
+
+```js
+store.createReadStream(opts, azureopts, cb);
+```
 
 opts should be `{key: string (usually a hash or path + filename}`
 
-`opts.params` additional [parameters](https://azure.microsoft.com/en-us/documentation/articles/storage-nodejs-how-to-use-blob-storage/#set-up-an-azure-storage-connection) to pass to Azure Blob storage
+`azureopts` additional [parameters](http://azure.github.io/azure-storage-node/BlobService.html#createReadStream) to pass to Azure Blob storage
 
-returns a readable stream of data for the file in your container whose key matches
 
 ## License
 
