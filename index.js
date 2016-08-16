@@ -2,6 +2,7 @@ import azure from 'azure-storage';
 import through from 'through2';
 
 const AzureBlobStore = (opts={}) => {
+
   if (!opts.accountName) {
     throw Error('Azure storage configuration error: missing accountName setting');
   }
@@ -15,34 +16,31 @@ const AzureBlobStore = (opts={}) => {
   let container = opts.container;
   let blobSvc = azure.createBlobService();
 
-  /*
-   *
-   */
-  const createWriteStream = (opts, done) => {
+
+  const createWriteStream = (opts, azropts = {}, done) => {
     if (typeof opts === 'string') opts = { key: opts };
-    if (typeof opts === 'function') return createWriteStream(null, opts);
+    if (typeof opts === 'function') return createWriteStream(null, opts, azropts);
+    if (typeof azropts === 'function') { done = azropts, azropts = {}; }
 
     opts.key = opts.key || opts.name;
 
     let proxy = through();
-    proxy.pause();
+    let ws = blobSvc.createWriteStreamToNewAppendBlob(container, opts.key, azropts);
 
-    blobSvc.createAppendBlobFromText(container, opts.key, opts.key, (err) => {
-      if (err) {
-        proxy.emit('error', err);
-        return done && done(err);
-      }
-
+    ws.on('close', () => {
       return done(null, { key: opts.key });
     });
+
+    ws.on('error', (err) => {
+      return done(err);
+    });
+
+    proxy.pipe(ws);
 
     return proxy;
   };
 
 
-  /**
-   *
-   */
   const createReadStream = (opts) => {
     if (typeof opts === 'string') opts = { key: opts };
     if (typeof opts === 'function') return createReadStream(null, opts);
@@ -51,9 +49,6 @@ const AzureBlobStore = (opts={}) => {
   };
 
 
-  /*
-   *
-   */
   const remove = (opts, done) => {
     if (typeof opts === 'string') opts = { key: opts };
     if (typeof opts === 'function') return remove (null, opts);
@@ -66,9 +61,6 @@ const AzureBlobStore = (opts={}) => {
   };
 
 
-  /*
-   *
-   */
   const exists = (opts, done) => {
     if (typeof opts === 'string') opts = { key: opts };
     if (typeof opts === 'function') return exists(null, opts);
@@ -82,9 +74,6 @@ const AzureBlobStore = (opts={}) => {
   };
 
 
-  /*
-   *
-   */
   return Object.freeze({
     createWriteStream,
     createReadStream,
