@@ -53,6 +53,12 @@ store.exists({ key: 'somefile.txt' }, function(err, exists) {
 
 ```
 
+###Note:
+
+Currently this only works on existing containers, so you'll have to create a 
+container beforehand. 
+
+
 ## API
 
 ```js
