@@ -1,5 +1,5 @@
 import azure from 'azure-storage';
-import through from 'through2';
+import AppendStream from './appendStream';
 
 const AzureBlobStore = (opts={}) => {
 
@@ -16,6 +16,7 @@ const AzureBlobStore = (opts={}) => {
   let { container, accountName, accessKey } = opts;
   let blobSvc = azure.createBlobService(accountName, accessKey);
 
+
   const createWriteStream = (opts, azropts = {}, done) => {
     if (typeof opts === 'string') opts = { key: opts };
     if (typeof opts === 'function') return createWriteStream(null, opts, azropts);
@@ -23,20 +24,16 @@ const AzureBlobStore = (opts={}) => {
 
     opts.key = opts.key || opts.name;
 
-    let proxy = through();
-    let ws = blobSvc.createWriteStreamToNewAppendBlob(container, opts.key, azropts);
-
-    ws.on('close', () => {
-      return done(null, { key: opts.key });
+    let as = new AppendStream({
+      blobSvc: blobSvc,
+      container: container,
+      key: opts.key
     });
 
-    ws.on('error', (err) => {
-      return done(err);
-    });
+    as.on('finish', () => { done(null, { key: opts.key }); });
+    as.on('error', (err) => { done(err); });
 
-    proxy.pipe(ws);
-
-    return proxy;
+    return as;
   };
 
 
