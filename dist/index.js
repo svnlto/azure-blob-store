@@ -8,9 +8,9 @@ var _azureStorage = require('azure-storage');
 
 var _azureStorage2 = _interopRequireDefault(_azureStorage);
 
-var _through = require('through2');
+var _appendStream = require('./appendStream');
 
-var _through2 = _interopRequireDefault(_through);
+var _appendStream2 = _interopRequireDefault(_appendStream);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -29,7 +29,10 @@ var AzureBlobStore = function AzureBlobStore() {
   }
 
   var container = opts.container;
-  var blobSvc = _azureStorage2.default.createBlobService(opts.accountName, opts.accessKey);
+  var accountName = opts.accountName;
+  var accessKey = opts.accessKey;
+
+  var blobSvc = _azureStorage2.default.createBlobService(accountName, accessKey);
 
   var createWriteStream = function createWriteStream(opts) {
     var azropts = arguments.length <= 1 || arguments[1] === undefined ? {} : arguments[1];
@@ -43,20 +46,20 @@ var AzureBlobStore = function AzureBlobStore() {
 
     opts.key = opts.key || opts.name;
 
-    var proxy = (0, _through2.default)();
-    var ws = blobSvc.createWriteStreamToNewAppendBlob(container, opts.key, azropts);
-
-    ws.on('close', function () {
-      return done(null, { key: opts.key });
+    var as = new _appendStream2.default({
+      blobSvc: blobSvc,
+      container: container,
+      key: opts.key
     });
 
-    ws.on('error', function (err) {
-      return done(err);
+    as.on('finish', function () {
+      done(null, { key: opts.key });
+    });
+    as.on('error', function (err) {
+      done(err);
     });
 
-    proxy.pipe(ws);
-
-    return proxy;
+    return as;
   };
 
   var createReadStream = function createReadStream(opts) {

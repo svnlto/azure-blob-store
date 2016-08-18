@@ -27,9 +27,7 @@ export default class AppendStream extends Transform {
         }
         return cb(err, result, resp);
       } else {
-        if (result !== null && result.blobType !== 'AppendBlob') {
-          return cb(err);
-        }
+        if (result !== null && result.blobType !== 'AppendBlob') { cb(err); }
         return blobSvc.appendFromText(container, key, data, cb);
       }
     });
