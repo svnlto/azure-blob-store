@@ -1,6 +1,6 @@
 {
   "name": "azure-blob-store",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "description": "Blob store that stores blobs on the Azure Blob storage",
   "main": "./dist/index.js",
   "scripts": {
