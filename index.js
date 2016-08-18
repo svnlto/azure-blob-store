@@ -13,9 +13,8 @@ const AzureBlobStore = (opts={}) => {
     throw Error('Azure storage configuration error: missing container setting');
   }
 
-  let container = opts.container;
-  let blobSvc = azure.createBlobService(opts.accountName, opts.accessKey);
-
+  let { container, accountName, accessKey } = opts;
+  let blobSvc = azure.createBlobService(accountName, accessKey);
 
   const createWriteStream = (opts, azropts = {}, done) => {
     if (typeof opts === 'string') opts = { key: opts };
