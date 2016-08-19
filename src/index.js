@@ -27,7 +27,8 @@ const AzureBlobStore = (opts={}) => {
     let as = new AppendStream({
       blobSvc: blobSvc,
       container: container,
-      key: opts.key
+      key: opts.key,
+      azropts: azropts
     });
 
     as.on('finish', () => { done(null, { key: opts.key }); });
@@ -37,11 +38,11 @@ const AzureBlobStore = (opts={}) => {
   };
 
 
-  const createReadStream = (opts) => {
+  const createReadStream = (opts, azropts) => {
     if (typeof opts === 'string') opts = { key: opts };
-    if (typeof opts === 'function') return createReadStream(null, opts);
+    if (typeof opts === 'function') return createReadStream(null, opts, azropts);
 
-    return blobSvc.createReadStream(container, opts.key);
+    return blobSvc.createReadStream(container, opts.key, azropts);
   };
 
 

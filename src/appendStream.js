@@ -13,30 +13,31 @@ export default class AppendStream extends Transform {
       resp: null,
       container: options.container,
       key: options.key,
-      blobSvc: options.blobSvc
+      blobSvc: options.blobSvc,
+      azropts: options.azropts
     };
   }
 
-  _writeToAppendBlobFromText(container, key, data, cb) {
+  _writeToAppendBlobFromText(container, key, data, azropts, cb) {
     let { blobSvc } = this.opts;
 
     blobSvc.getBlobProperties(container, key, (err, result, resp) => {
       if (err !== null) {
         if (resp !== null && resp.statusCode === 404) {
-          return blobSvc.createAppendBlobFromText(container, key, data, cb);
+          return blobSvc.createAppendBlobFromText(container, key, data, azropts, cb);
         }
         return cb(err, result, resp);
       } else {
         if (result !== null && result.blobType !== 'AppendBlob') { cb(err); }
-        return blobSvc.appendFromText(container, key, data, cb);
+        return blobSvc.appendFromText(container, key, data, azropts, cb);
       }
     });
   }
 
   _transform(data, enc, next) {
-    let { container, key } = this.opts;
+    let { container, key, azropts } = this.opts;
 
-    this._writeToAppendBlobFromText(container, key, data, (err, res, resp) => {
+    this._writeToAppendBlobFromText(container, key, data, azropts, (err, res, resp) => {
       delete res.getPropertiesFromHeaders;
       this.opts.resp = Object.assign({}, res, resp);
       next();
