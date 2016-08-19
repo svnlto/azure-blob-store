@@ -14,7 +14,7 @@ export default class AppendStream extends Transform {
       container: options.container,
       key: options.key,
       blobSvc: options.blobSvc,
-      azropts: options.azropts
+      azropts: options.azure
     };
   }
 

@@ -78,7 +78,7 @@ var store = new AzureBlobStore(options);
 -
 
 ```js
- store.createWriteStream(opts, azureopts, cb);
+ store.createWriteStream(opts, cb);
 ```
 
 
@@ -87,19 +87,19 @@ returns a writable stream that you can pipe data to.
 `opts` should be an object that has options `key` (will be the filename in
 your container)
 
-`azureopts` additional [parameters](http://azure.github.io/azure-storage-node/BlobService.html#createWriteStreamToNewAppendBlob) to pass to Azure Blob storage
+`opts.azure` additional [parameters](http://azure.github.io/azure-storage-node/BlobService.html#createWriteStreamToNewAppendBlob) to pass to Azure Blob storage
 
 `cb` will be called with `(err)` if there is was an error
 
 -
 
 ```js
-store.createReadStream(opts, azureopts, cb);
+store.createReadStream(opts, cb);
 ```
 
 opts should be `{key: string (usually a hash or path + filename}`
 
-`azureopts` additional [parameters](http://azure.github.io/azure-storage-node/BlobService.html#createReadStream) to pass to Azure Blob storage
+`opts.azure` additional [parameters](http://azure.github.io/azure-storage-node/BlobService.html#createReadStream) to pass to Azure Blob storage
 
 -
 

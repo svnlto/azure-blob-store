@@ -1,7 +1,7 @@
 import azure from 'azure-storage';
 import AppendStream from './appendStream';
 
-const AzureBlobStore = (opts={}) => {
+const AzureBlobStore = (opts={azure: {}}) => {
 
   if (!opts.accountName) {
     throw Error('Azure storage configuration error: missing accountName setting');
@@ -17,10 +17,9 @@ const AzureBlobStore = (opts={}) => {
   let blobSvc = azure.createBlobService(accountName, accessKey);
 
 
-  const createWriteStream = (opts, azropts = {}, done) => {
+  const createWriteStream = (opts, done) => {
     if (typeof opts === 'string') opts = { key: opts };
-    if (typeof opts === 'function') return createWriteStream(null, opts, azropts);
-    if (typeof azropts === 'function') { done = azropts, azropts = {}; }
+    if (typeof opts === 'function') return createWriteStream(null, opts);
 
     opts.key = opts.key || opts.name;
 
@@ -28,7 +27,7 @@ const AzureBlobStore = (opts={}) => {
       blobSvc: blobSvc,
       container: container,
       key: opts.key,
-      azropts: azropts
+      azure: opts.azure
     });
 
     as.on('finish', () => { done(null, { key: opts.key }); });
@@ -38,11 +37,11 @@ const AzureBlobStore = (opts={}) => {
   };
 
 
-  const createReadStream = (opts, azropts) => {
+  const createReadStream = (opts) => {
     if (typeof opts === 'string') opts = { key: opts };
-    if (typeof opts === 'function') return createReadStream(null, opts, azropts);
+    if (typeof opts === 'function') return createReadStream(null, opts, opts.azure);
 
-    return blobSvc.createReadStream(container, opts.key, azropts);
+    return blobSvc.createReadStream(container, opts.key, opts.azure);
   };
 
 
