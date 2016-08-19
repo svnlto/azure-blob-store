@@ -5,7 +5,7 @@ if (!process.env.CI) {
 
 import blobTests from 'abstract-blob-store/tests';
 import test from 'tape';
-import BlobStore from './index.js';
+import BlobStore from './src/index.js';
 
 let store = new BlobStore({
   accountName: process.env.AZURE_STORAGE_ACCOUNT,
