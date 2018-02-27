@@ -1,6 +1,8 @@
 
 # azure-blob-store
 
+[![GuardRails badge](https://badges.guardrails.io/svnlto/azure-blob-store.svg)](https://guardrails.io/)
+
   Azure Blob storage [abstract-blob-store](http://npmrepo.com/abstract-blob-store)
 
   [![Build Status](https://travis-ci.org/svnlto/azure-blob-store.svg)](https://travis-ci.org/svnlto/azure-blob-store)
